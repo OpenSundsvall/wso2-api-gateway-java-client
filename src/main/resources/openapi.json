@@ -1,0 +1,789 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "FeedbackSettings",
+    "description" : "Generell tjänst för att hantera medborgares (anonyma eller ej) inställningar för återkoppling (för till exempel felanmälningar och driftstörningar).",
+    "contact" : {
+      "name" : "Sundsvalls kommun - Dennis Nilsson",
+      "email" : "dennis.nilsson@sundsvall.se"
+    },
+    "version" : "0.1"
+  },
+  "servers" : [ {
+    "url" : "https://api-test.sundsvall.se/feedbacksettings/0.1"
+  }, {
+    "url" : "http://api-test.sundsvall.se/feedbacksettings/0.1"
+  } ],
+  "security" : [ {
+    "default" : [ ]
+  } ],
+  "paths" : {
+    "/settings" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "emailAddress",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "mobileNumber",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "personId",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No settings where found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "detail" : {
+                      "type" : "string"
+                    },
+                    "instance" : {
+                      "type" : "string"
+                    },
+                    "status" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "title" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    }
+                  },
+                  "example" : {
+                    "title" : "Not Found",
+                    "status" : 404,
+                    "detail" : "No settings where found."
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "example" : [ {
+                    "id" : 1,
+                    "mobileNumber" : "0731111111",
+                    "emailAddress" : "1.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc731",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }, {
+                    "id" : 2,
+                    "mobileNumber" : "0731111112",
+                    "emailAddress" : "2.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc732",
+                    "primaryContactMethod" : "EMAIL",
+                    "sendFeedback" : true
+                  }, {
+                    "id" : 3,
+                    "mobileNumber" : "0731111113",
+                    "emailAddress" : "3.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc733",
+                    "primaryContactMethod" : "EMAIL",
+                    "sendFeedback" : false
+                  } ],
+                  "items" : {
+                    "required" : [ "primaryContactMethod", "sendFeedback" ],
+                    "type" : "object",
+                    "properties" : {
+                      "emailAddress" : {
+                        "type" : "string",
+                        "example" : "test.testorsson@test.se"
+                      },
+                      "id" : {
+                        "type" : "integer",
+                        "format" : "int64",
+                        "readOnly" : true
+                      },
+                      "mobileNumber" : {
+                        "type" : "string",
+                        "example" : "0731231212"
+                      },
+                      "personId" : {
+                        "type" : "string",
+                        "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                      },
+                      "primaryContactMethod" : {
+                        "allOf" : [ {
+                          "$ref" : "#/components/schemas/ContactMethod"
+                        }, {
+                          "example" : "SMS"
+                        } ]
+                      },
+                      "sendFeedback" : {
+                        "type" : "boolean",
+                        "example" : true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedbackSettings"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "primaryContactMethod", "sendFeedback" ],
+                  "type" : "object",
+                  "properties" : {
+                    "emailAddress" : {
+                      "type" : "string",
+                      "example" : "test.testorsson@test.se"
+                    },
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "readOnly" : true
+                    },
+                    "mobileNumber" : {
+                      "type" : "string",
+                      "example" : "0731231212"
+                    },
+                    "personId" : {
+                      "type" : "string",
+                      "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                    },
+                    "primaryContactMethod" : {
+                      "allOf" : [ {
+                        "$ref" : "#/components/schemas/ContactMethod"
+                      }, {
+                        "example" : "SMS"
+                      } ]
+                    },
+                    "sendFeedback" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  },
+                  "example" : {
+                    "id" : 1,
+                    "mobileNumber" : "0731231212",
+                    "emailAddress" : "test.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc73f",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      }
+    },
+    "/settings/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No settings where found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "detail" : {
+                      "type" : "string"
+                    },
+                    "instance" : {
+                      "type" : "string"
+                    },
+                    "status" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "title" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    }
+                  },
+                  "example" : {
+                    "title" : "Not Found",
+                    "status" : 404,
+                    "detail" : "No settings where found."
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "primaryContactMethod", "sendFeedback" ],
+                  "type" : "object",
+                  "properties" : {
+                    "emailAddress" : {
+                      "type" : "string",
+                      "example" : "test.testorsson@test.se"
+                    },
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "readOnly" : true
+                    },
+                    "mobileNumber" : {
+                      "type" : "string",
+                      "example" : "0731231212"
+                    },
+                    "personId" : {
+                      "type" : "string",
+                      "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                    },
+                    "primaryContactMethod" : {
+                      "allOf" : [ {
+                        "$ref" : "#/components/schemas/ContactMethod"
+                      }, {
+                        "example" : "SMS"
+                      } ]
+                    },
+                    "sendFeedback" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  },
+                  "example" : {
+                    "id" : 1,
+                    "mobileNumber" : "0731231212",
+                    "emailAddress" : "test.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc73f",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      },
+      "put" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedbackSettings"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No settings where found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "detail" : {
+                      "type" : "string"
+                    },
+                    "instance" : {
+                      "type" : "string"
+                    },
+                    "status" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "title" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    }
+                  },
+                  "example" : {
+                    "title" : "Not Found",
+                    "status" : 404,
+                    "detail" : "No settings where found."
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "primaryContactMethod", "sendFeedback" ],
+                  "type" : "object",
+                  "properties" : {
+                    "emailAddress" : {
+                      "type" : "string",
+                      "example" : "test.testorsson@test.se"
+                    },
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "readOnly" : true
+                    },
+                    "mobileNumber" : {
+                      "type" : "string",
+                      "example" : "0731231212"
+                    },
+                    "personId" : {
+                      "type" : "string",
+                      "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                    },
+                    "primaryContactMethod" : {
+                      "allOf" : [ {
+                        "$ref" : "#/components/schemas/ContactMethod"
+                      }, {
+                        "example" : "SMS"
+                      } ]
+                    },
+                    "sendFeedback" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  },
+                  "example" : {
+                    "id" : 1,
+                    "mobileNumber" : "0731231212",
+                    "emailAddress" : "test.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc73f",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No settings where found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "detail" : {
+                      "type" : "string"
+                    },
+                    "instance" : {
+                      "type" : "string"
+                    },
+                    "status" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "title" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    }
+                  },
+                  "example" : {
+                    "title" : "Not Found",
+                    "status" : 404,
+                    "detail" : "No settings where found."
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "primaryContactMethod", "sendFeedback" ],
+                  "type" : "object",
+                  "properties" : {
+                    "emailAddress" : {
+                      "type" : "string",
+                      "example" : "test.testorsson@test.se"
+                    },
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "readOnly" : true
+                    },
+                    "mobileNumber" : {
+                      "type" : "string",
+                      "example" : "0731231212"
+                    },
+                    "personId" : {
+                      "type" : "string",
+                      "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                    },
+                    "primaryContactMethod" : {
+                      "allOf" : [ {
+                        "$ref" : "#/components/schemas/ContactMethod"
+                      }, {
+                        "example" : "SMS"
+                      } ]
+                    },
+                    "sendFeedback" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  },
+                  "example" : {
+                    "id" : 1,
+                    "mobileNumber" : "0731231212",
+                    "emailAddress" : "test.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc73f",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      },
+      "patch" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedbackSettings"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Information"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No settings where found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "detail" : {
+                      "type" : "string"
+                    },
+                    "instance" : {
+                      "type" : "string"
+                    },
+                    "status" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "title" : {
+                      "type" : "string"
+                    },
+                    "type" : {
+                      "type" : "string"
+                    }
+                  },
+                  "example" : {
+                    "title" : "Not Found",
+                    "status" : 404,
+                    "detail" : "No settings where found."
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "primaryContactMethod", "sendFeedback" ],
+                  "type" : "object",
+                  "properties" : {
+                    "emailAddress" : {
+                      "type" : "string",
+                      "example" : "test.testorsson@test.se"
+                    },
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "readOnly" : true
+                    },
+                    "mobileNumber" : {
+                      "type" : "string",
+                      "example" : "0731231212"
+                    },
+                    "personId" : {
+                      "type" : "string",
+                      "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+                    },
+                    "primaryContactMethod" : {
+                      "allOf" : [ {
+                        "$ref" : "#/components/schemas/ContactMethod"
+                      }, {
+                        "example" : "SMS"
+                      } ]
+                    },
+                    "sendFeedback" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  },
+                  "example" : {
+                    "id" : 1,
+                    "mobileNumber" : "0731231212",
+                    "emailAddress" : "test.testorsson@test.se",
+                    "personId" : "15aee472-46ab-4f03-9605-68bd64ebc73f",
+                    "primaryContactMethod" : "SMS",
+                    "sendFeedback" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "default" : [ ]
+        } ],
+        "x-auth-type" : null,
+        "x-throttling-tier" : null
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Information" : {
+        "type" : "object",
+        "properties" : {
+          "detail" : {
+            "type" : "string"
+          },
+          "instance" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ContactMethod" : {
+        "type" : "string",
+        "enum" : [ "EMAIL", "SMS" ]
+      },
+      "FeedbackSettings" : {
+        "required" : [ "primaryContactMethod", "sendFeedback" ],
+        "type" : "object",
+        "properties" : {
+          "emailAddress" : {
+            "type" : "string",
+            "example" : "test.testorsson@test.se"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "readOnly" : true
+          },
+          "mobileNumber" : {
+            "type" : "string",
+            "example" : "0731231212"
+          },
+          "personId" : {
+            "type" : "string",
+            "example" : "15aee472-46ab-4f03-9605-68bd64ebc73f"
+          },
+          "primaryContactMethod" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/ContactMethod"
+            }, {
+              "example" : "SMS"
+            } ]
+          },
+          "sendFeedback" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "default" : {
+        "type" : "oauth2",
+        "flows" : {
+          "implicit" : {
+            "authorizationUrl" : "https://api-test.sundsvall.se/authorize",
+            "scopes" : { }
+          }
+        }
+      }
+    }
+  }
+}
