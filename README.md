@@ -1,14 +1,14 @@
 # WSO2 API Gateway Client
 
-Detta är en exempel-applikation vars syfte är att hjälpa utvecklare att bygga klienter för att göra anrop mot API:er som exponeras i Sundsvalls kommuns API Gateway - **WSO2**.
+Detta är en exempel-applikation vars syfte är att hjälpa utvecklare att bygga klienter för att göra anrop mot API:er som exponeras i WSO2 API Gateway.
 
 Detta innefattar även hantering av Oauth2-tokens. 
-Vi använder oss av Oauth2's grant type: [Client credentials](https://oauth.net/2/grant-types/client-credentials/  )
+I denna applikation använder vi oss av Oauth2's grant type: [Client credentials](https://oauth.net/2/grant-types/client-credentials/  )
 
 ## Instruktioner
 För att komma igång med utvecklingen av din klient så kan du börja med att klona ned detta repo:
 ```
-git clone https://github.com/Sundsvallskommun/wso2-api-gateway-java-client.git 
+git clone https://github.com/OpenMunicipality/wso2-api-gateway-java-client.git 
 ```
 
 Nu är det dags att använda den OpenAPI-specifikation som gäller för det API du vill anropa. 
