@@ -1,5 +1,11 @@
 # WSO2 API Gateway Client
 
+## Leverantör
+
+Sundsvalls kommun
+
+## Beskrivning
+
 Detta är en exempel-applikation vars syfte är att hjälpa utvecklare att bygga klienter för att göra anrop mot API:er som exponeras i WSO2 API Gateway.
 
 Detta innefattar även hantering av Oauth2-tokens. 
